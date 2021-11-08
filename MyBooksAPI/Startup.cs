@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MyBooksAPI.Data;
 using MyBooksAPI.Data.Services;
+using MyBooksAPI.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace MyBooksAPI
 
             //Configure the Services
             services.AddTransient<BookServices>();
+            services.AddTransient<AuthorsService>();
+            services.AddTransient<PublishersService>();
 
 
 
@@ -65,12 +68,15 @@ namespace MyBooksAPI
 
             app.UseAuthorization();
 
+            //Exception Handling
+            app.ConfigureBuildInExceptionHandler();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            AppDbInitializer.Seed(app);
+            //AppDbInitializer.Seed(app);
         }
     }
 }
